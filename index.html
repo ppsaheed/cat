@@ -7,25 +7,26 @@
 </head>
 <body>
 
-<input type="file" id="csvFileInput" accept=".csv">
+<!-- Removed the input element for file selection, assuming db.csv is fixed -->
+
 <div id="csvData"></div>
 
 <script>
-    document.getElementById('csvFileInput').addEventListener('change', handleFileSelect);
+    // Call handleFileSelect with the file name "db.csv" directly
+    handleFileSelect('db.csv');
 
-    function handleFileSelect(event) {
-        const file = event.target.files[0];
+    function handleFileSelect(fileName) {
+        // Construct the path to the CSV file
+        const filePath = fileName; // Assuming db.csv is in the same directory as the HTML file
 
-        if (file) {
-            const reader = new FileReader();
-
-            reader.onload = function(e) {
-                const csvData = e.target.result;
+        // Use fetch to get the CSV file content
+        fetch(filePath)
+            .then(response => response.text())
+            .then(csvData => {
+                // Display CSV data
                 displayCSVData(csvData);
-            };
-
-            reader.readAsText(file);
-        }
+            })
+            .catch(error => console.error('Error reading CSV file:', error));
     }
 
     function displayCSVData(csvData) {
